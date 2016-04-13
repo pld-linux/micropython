@@ -15,6 +15,10 @@ BuildRequires:	libffi-devel
 BuildRequires:	pkgconfig
 BuildRequires:	python
 BuildRequires:	python-modules
+%if %{with tests}
+BuildRequires:	python3
+BuildRequires:	python3-modules
+%endif
 BuildRequires:	readline-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
