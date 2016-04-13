@@ -1,4 +1,6 @@
-%bcond_without	tests
+#
+# Conditional build:
+%bcond_without	tests		# build without tests
 
 Summary:	Implementation of Python 3 with very low memory footprint
 Name:		micropython
@@ -6,15 +8,16 @@ Version:	1.6
 Release:	1
 License:	MIT
 Group:		Development/Languages/Python
-URL:		http://micropython.org/
 Source0:	https://github.com/micropython/micropython/archive/v%{version}.tar.gz
 # Source0-md5:	e5c53c2c19bb454d0854b2ed8896e43c
+URL:		http://micropython.org/
 BuildRequires:	libffi-devel
 BuildRequires:	python3-devel
 BuildRequires:	readline-devel
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Implementation of Python 3 with very low memory footprint
+Implementation of Python 3 with very low memory footprint.
 
 %prep
 %setup -q
@@ -28,9 +31,8 @@ Implementation of Python 3 with very low memory footprint
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT%{_bindir}
-install -pm 755 unix/micropython $RPM_BUILD_ROOT%{_bindir}
+install -p unix/micropython $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
