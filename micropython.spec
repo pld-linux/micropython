@@ -12,7 +12,9 @@ Source0:	https://github.com/micropython/micropython/archive/v%{version}.tar.gz
 # Source0-md5:	e5c53c2c19bb454d0854b2ed8896e43c
 URL:		http://micropython.org/
 BuildRequires:	libffi-devel
-BuildRequires:	python3-devel
+BuildRequires:	pkgconfig
+BuildRequires:	python
+BuildRequires:	python-modules
 BuildRequires:	readline-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
