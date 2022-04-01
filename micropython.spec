@@ -4,14 +4,15 @@
 
 Summary:	Implementation of Python 3 with very low memory footprint
 Name:		micropython
-Version:	1.10
+Version:	1.18
 Release:	1
 License:	MIT
 Group:		Development/Languages/Python
 Source0:	http://micropython.org/resources/source/%{name}-%{version}.tar.xz
-# Source0-md5:	d16db23dd070064ed491f31e4fd3b540
+# Source0-md5:	134dcca4c286b8be9d2cc738809b7246
 URL:		http://micropython.org/
 BuildRequires:	libffi-devel
+BuildRequires:	mbedtls-devel
 BuildRequires:	pkgconfig
 BuildRequires:	python
 BuildRequires:	python-modules
@@ -29,8 +30,15 @@ Implementation of Python 3 with very low memory footprint.
 %setup -q
 
 %build
+
+# add -I/where/jni.h (do we have a method to get this dir?) is and MICROPY_PY_JNI=1 to make below
+
 %{__make} -C ports/unix \
 	CC="%{__cc}" \
+	CFLAGS_EXTRA="%{rpmcppflags} %{rpmcflags} -Wno-error=maybe-uninitialized" \
+	LDFLAGS_EXTRA="%{rpmldflags}" \
+	MICROPY_SSL_MBEDTLS=1 \
+	STRIP=true \
 	V=1
 
 %{?with_tests:%{__make} -C ports/unix test}
