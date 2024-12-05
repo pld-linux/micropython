@@ -4,12 +4,12 @@
 
 Summary:	Implementation of Python 3 with very low memory footprint
 Name:		micropython
-Version:	1.18
+Version:	1.24.1
 Release:	1
 License:	MIT
 Group:		Development/Languages/Python
 Source0:	http://micropython.org/resources/source/%{name}-%{version}.tar.xz
-# Source0-md5:	134dcca4c286b8be9d2cc738809b7246
+# Source0-md5:	1086e0af7127fc5021ca91f882c985f7
 URL:		http://micropython.org/
 BuildRequires:	libffi-devel
 BuildRequires:	mbedtls-devel
@@ -47,7 +47,7 @@ Implementation of Python 3 with very low memory footprint.
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_bindir}
-cp -a ports/unix/micropython $RPM_BUILD_ROOT%{_bindir}
+cp -a ports/unix/build-standard/micropython $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
