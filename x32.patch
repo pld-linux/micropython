@@ -1,0 +1,39 @@
+--- micropython-1.24.1/py/mpz.h~	2024-11-30 00:49:21.000000000 +0100
++++ micropython-1.24.1/py/mpz.h	2024-12-28 15:57:53.439998291 +0100
+@@ -46,8 +46,12 @@
+ 
+ #ifndef MPZ_DIG_SIZE
+   #if defined(__x86_64__) || defined(_WIN64)
++    #if defined(__ILP32__)
++      #define MPZ_DIG_SIZE (16)
++    #else
+ // 64-bit machine, using 32-bit storage for digits
+-    #define MPZ_DIG_SIZE (32)
++      #define MPZ_DIG_SIZE (32)
++    #endif
+   #else
+ // default: 32-bit machine, using 16-bit storage for digits
+     #define MPZ_DIG_SIZE (16)
+--- micropython-1.24.1/py/nlr.h~	2024-11-30 00:49:21.000000000 +0100
++++ micropython-1.24.1/py/nlr.h	2024-12-28 15:54:01.423331665 +0100
+@@ -60,7 +60,7 @@
+ #if defined(__i386__)
+     #define MICROPY_NLR_X86 (1)
+     #define MICROPY_NLR_NUM_REGS (MICROPY_NLR_NUM_REGS_X86)
+-#elif defined(__x86_64__)
++#elif defined(__x86_64__) && !defined(__ILP32__)
+     #define MICROPY_NLR_X64 (1)
+     #if MICROPY_NLR_OS_WINDOWS
+         #define MICROPY_NLR_NUM_REGS (MICROPY_NLR_NUM_REGS_X64_WIN)
+--- micropython-1.24.1/tests/run-tests.py~	2024-11-30 00:49:28.000000000 +0100
++++ micropython-1.24.1/tests/run-tests.py	2024-12-28 16:24:37.973331385 +0100
+@@ -576,6 +576,9 @@
+         "struct_endian",
+     )
+ 
++    if os.getenv("X32") == "true":
++        skip_tests.add("micropython/import_mpy_native_gc.py")
++
+     # Some tests shouldn't be run on GitHub Actions
+     if os.getenv("GITHUB_ACTIONS") == "true":
+         skip_tests.add("thread/stress_schedule.py")  # has reliability issues

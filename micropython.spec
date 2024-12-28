@@ -11,6 +11,7 @@ Group:		Development/Languages/Python
 Source0:	http://micropython.org/resources/source/%{name}-%{version}.tar.xz
 # Source0-md5:	1086e0af7127fc5021ca91f882c985f7
 Patch0:		x86.patch
+Patch1:		x32.patch
 URL:		http://micropython.org/
 BuildRequires:	libffi-devel
 BuildRequires:	mbedtls-devel
@@ -20,6 +21,7 @@ BuildRequires:	python-modules
 %if %{with tests}
 BuildRequires:	python3
 BuildRequires:	python3-modules
+BuildRequires:	python3-elftools
 %endif
 BuildRequires:	readline-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -30,6 +32,7 @@ Implementation of Python 3 with very low memory footprint.
 %prep
 %setup -q
 %patch -P 0 -p1
+%patch -P 1 -p1
 
 %build
 
@@ -37,13 +40,18 @@ Implementation of Python 3 with very low memory footprint.
 
 %{__make} -C ports/unix \
 	CC="%{__cc}" \
-	CFLAGS_EXTRA="%{rpmcppflags} %{rpmcflags} -Wno-error=maybe-uninitialized" \
+	CFLAGS_EXTRA="%{rpmcppflags} %{rpmcflags} -Wno-error=maybe-uninitialized -Wno-error=clobbered" \
 	LDFLAGS_EXTRA="%{rpmldflags}" \
 	MICROPY_SSL_MBEDTLS=1 \
 	STRIP=true \
 	V=1
 
-%{?with_tests:%{__make} -C ports/unix test}
+%if %{with tests}
+%ifarch x32
+export X32=true
+%endif
+%{__make} -C ports/unix test
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
