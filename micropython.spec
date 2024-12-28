@@ -10,6 +10,7 @@ License:	MIT
 Group:		Development/Languages/Python
 Source0:	http://micropython.org/resources/source/%{name}-%{version}.tar.xz
 # Source0-md5:	1086e0af7127fc5021ca91f882c985f7
+Patch0:		x86.patch
 URL:		http://micropython.org/
 BuildRequires:	libffi-devel
 BuildRequires:	mbedtls-devel
@@ -28,6 +29,7 @@ Implementation of Python 3 with very low memory footprint.
 
 %prep
 %setup -q
+%patch -P 0 -p1
 
 %build
 

@@ -1,0 +1,11 @@
+--- micropython-1.24.1/py/mpconfig.h~	2024-11-30 00:49:28.000000000 +0100
++++ micropython-1.24.1/py/mpconfig.h	2024-12-28 16:04:16.466664907 +0100
+@@ -843,7 +843,7 @@
+ 
+ // Whether to use the native _Float16 for 16-bit float support
+ #ifndef MICROPY_FLOAT_USE_NATIVE_FLT16
+-#ifdef __FLT16_MAX__
++#if defined(__FLT16_MAX__) && !defined(__i386__)
+ #define MICROPY_FLOAT_USE_NATIVE_FLT16 (1)
+ #else
+ #define MICROPY_FLOAT_USE_NATIVE_FLT16 (0)
