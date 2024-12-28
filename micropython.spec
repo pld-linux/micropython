@@ -5,7 +5,7 @@
 Summary:	Implementation of Python 3 with very low memory footprint
 Name:		micropython
 Version:	1.24.1
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Languages/Python
 Source0:	http://micropython.org/resources/source/%{name}-%{version}.tar.xz
